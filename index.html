@@ -16,17 +16,17 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #fff; 
-            color: #333;
+            background-color: #333; /* Set dark background based on your image */
+            color: #ccc; /* Set light text color */
         }
         .container {
             max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
+            margin: 50px auto; /* Centering the box */
+            background-color: #1a1a1a; /* Dark container background */
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 1px solid #ccc; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid #555; 
         }
         h1 {
             color: #e5461c; 
@@ -40,6 +40,7 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #ccc;
         }
         .time-input-group {
             display: flex;
@@ -50,22 +51,26 @@
             width: 50px; 
             padding: 10px;
             text-align: center;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 4px;
             font-size: 16px;
+            background-color: #2b2b2b; /* Dark input background */
+            color: #eee;
         }
         .time-separator {
             font-size: 1.5em;
             font-weight: bold;
-            color: #666;
+            color: #aaa;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 4px;
             box-sizing: border-box; 
             font-size: 16px;
+            background-color: #2b2b2b; /* Dark input background */
+            color: #eee;
         }
         button {
             background-color: #f0883d;
@@ -83,7 +88,7 @@
             background-color: #e5461c;
         }
         .button-group {
-            display: none; 
+            display: flex; /* Changed from 'none' for testing */
             gap: 10px; 
             margin-top: 20px;
         }
@@ -94,8 +99,8 @@
         #result {
             margin-top: 30px;
             padding: 15px;
-            background-color: #e6f7ff;
-            border: 1px solid #b3e0ff;
+            background-color: #444; /* Dark result background */
+            border: 1px solid #777;
             border-radius: 4px;
             font-size: 1.4em;
             text-align: center;
@@ -106,13 +111,14 @@
             justify-content: center;
             flex-direction: column; 
             line-height: 1.2; 
+            color: #eee;
         }
         #result div {
             margin: 2px 0; 
         }
         .time-label {
             font-size: 0.9em;
-            color: #666;
+            color: #aaa;
             margin-top: 5px;
         }
     </style>
@@ -125,3 +131,82 @@
     <div class="input-group">
         <label for="bookTitle">Current Book Title:</label>
         <input type="text" id="bookTitle" placeholder="Enter book title" onblur="handleTitleBlur()" oninput="toggleClearButtons()">
+    </div>
+    
+    <div class="input-group">
+        <label>Total Audiobook Time (H:MM:SS):</label>
+        <div class="time-input-group">
+            <input type="number" id="totalHours" placeholder="H" min="0">
+            <span class="time-separator">:</span>
+            <input type="number" id="totalMinutes" placeholder="MM" min="0" max="59">
+            <span class="time-separator">:</span>
+            <input type="number" id="totalSeconds" placeholder="SS" min="0" max="59">
+        </div>
+        <div class="time-label">Enter the full length of the audiobook.</div>
+    </div>
+    
+    <div class="input-group">
+        <label>Current Progress (H:MM:SS):</label>
+        <div class="time-input-group">
+            <input type="number" id="progressHours" placeholder="H" min="0">
+            <span class="time-separator">:</span>
+            <input type="number" id="progressMinutes" placeholder="MM" min="0" max="59">
+            <span class="time-separator">:</span>
+            <input type="number" id="progressSeconds" placeholder="SS" min="0" max="59">
+        </div>
+        <div class="time-label">Enter how far you have listened.</div>
+    </div>
+
+    <button onclick="calculateRemainingTime()">Calculate Remaining Time</button>
+
+    <div id="result">
+        <div>Progress will display here.</div>
+    </div>
+
+    <div class="button-group" id="buttonGroup">
+        <button onclick="saveProgress()">Save Progress</button>
+        <button onclick="clearProgress()" style="background-color: #cc4444;">Clear Current Book</button>
+    </div>
+
+</div> <script>
+    // --- JAVASCRIPT PLACEHOLDERS ---
+    // You need to paste your actual functions here to make the buttons work!
+    function loadProgress() {
+        console.log("Loading progress from local storage...");
+        // Your logic to load saved data
+    }
+    
+    function handleTitleBlur() {
+        console.log("Book title updated.");
+        // Your logic for saving the title
+    }
+
+    function toggleClearButtons() {
+        // Your logic to show/hide the clear button
+    }
+
+    function calculateRemainingTime() {
+        console.log("Calculating remaining time...");
+        // Your calculation logic
+    }
+
+    function saveProgress() {
+        console.log("Saving current progress...");
+        // Your save logic
+    }
+
+    function clearProgress() {
+        console.log("Clearing all progress...");
+        // Your clear logic
+    }
+</script>
+
+</body> </html> ```
+
+**Next Step:**
+
+1.  **Replace** the content of your `index.html` file with the complete code above.
+2.  **Paste** your actual JavaScript functions into the `<script>` tag where the placeholders are.
+3.  **Commit and Push** the updated `index.html` to your GitHub repository.
+4.  Check your GitHub Pages link to confirm the full app appears.
+5.  If it looks correct, you can run the final **`bubblewrap build`** to create the updated APK.
