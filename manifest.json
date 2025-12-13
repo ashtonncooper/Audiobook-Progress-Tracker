@@ -2,7 +2,7 @@
   "name": "Audiobook Tracker",
   "short_name": "Tracker",
   "description": "Audiobook Completion Progress Tracker",
-  "start_url": "./index.html",
+  "start_url": "/index.html", 
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e5461c"
