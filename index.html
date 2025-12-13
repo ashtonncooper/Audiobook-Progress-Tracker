@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#e5461c"> 
     
     <style>
@@ -16,17 +16,18 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #333; /* Set dark background based on your image */
-            color: #ccc; /* Set light text color */
+            background-color: #fff; 
+            color: #333;
         }
         .container {
             max-width: 600px;
-            margin: 50px auto; /* Centering the box */
-            background-color: #1a1a1a; /* Dark container background */
+            margin: 0 auto;
+            background-color: #fff;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            border: 1px solid #555; 
+            /* V2.6 Styles for Dark Mode visibility */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ccc; 
         }
         h1 {
             color: #e5461c; 
@@ -40,7 +41,6 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            color: #ccc;
         }
         .time-input-group {
             display: flex;
@@ -51,26 +51,22 @@
             width: 50px; 
             padding: 10px;
             text-align: center;
-            border: 1px solid #555;
+            border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
-            background-color: #2b2b2b; /* Dark input background */
-            color: #eee;
         }
         .time-separator {
             font-size: 1.5em;
             font-weight: bold;
-            color: #aaa;
+            color: #666;
         }
         input[type="text"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #555;
+            border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box; 
             font-size: 16px;
-            background-color: #2b2b2b; /* Dark input background */
-            color: #eee;
         }
         button {
             background-color: #f0883d;
@@ -88,7 +84,7 @@
             background-color: #e5461c;
         }
         .button-group {
-            display: flex; /* Changed from 'none' for testing */
+            display: none; /* V4.1: Hidden by default */
             gap: 10px; 
             margin-top: 20px;
         }
@@ -99,8 +95,8 @@
         #result {
             margin-top: 30px;
             padding: 15px;
-            background-color: #444; /* Dark result background */
-            border: 1px solid #777;
+            background-color: #e6f7ff;
+            border: 1px solid #b3e0ff;
             border-radius: 4px;
             font-size: 1.4em;
             text-align: center;
@@ -111,14 +107,13 @@
             justify-content: center;
             flex-direction: column; 
             line-height: 1.2; 
-            color: #eee;
         }
         #result div {
             margin: 2px 0; 
         }
         .time-label {
             font-size: 0.9em;
-            color: #aaa;
+            color: #666;
             margin-top: 5px;
         }
     </style>
@@ -132,81 +127,401 @@
         <label for="bookTitle">Current Book Title:</label>
         <input type="text" id="bookTitle" placeholder="Enter book title" onblur="handleTitleBlur()" oninput="toggleClearButtons()">
     </div>
-    
+
     <div class="input-group">
-        <label>Total Audiobook Time (H:MM:SS):</label>
+        <label>Time Listened So Far:</label>
         <div class="time-input-group">
-            <input type="number" id="totalHours" placeholder="H" min="0">
+            <input type="text" id="listened_h" maxlength="2" placeholder="HH" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
             <span class="time-separator">:</span>
-            <input type="number" id="totalMinutes" placeholder="MM" min="0" max="59">
+            <input type="text" id="listened_m" maxlength="2" placeholder="MM" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
             <span class="time-separator">:</span>
-            <input type="number" id="totalSeconds" placeholder="SS" min="0" max="59">
+            <input type="text" id="listened_s" maxlength="2" placeholder="SS" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
         </div>
-        <div class="time-label">Enter the full length of the audiobook.</div>
     </div>
     
     <div class="input-group">
-        <label>Current Progress (H:MM:SS):</label>
+        <label>Total Book Length:</label>
         <div class="time-input-group">
-            <input type="number" id="progressHours" placeholder="H" min="0">
+            <input type="text" id="total_h" maxlength="2" placeholder="HH" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
             <span class="time-separator">:</span>
-            <input type="number" id="progressMinutes" placeholder="MM" min="0" max="59">
+            <input type="text" id="total_m" maxlength="2" placeholder="MM" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
             <span class="time-separator">:</span>
-            <input type="number" id="progressSeconds" placeholder="SS" min="0" max="59">
+            <input type="text" id="total_s" maxlength="2" placeholder="SS" class="time-pill" inputmode="numeric" pattern="[0-9]*" oninput="toggleClearButtons()">
         </div>
-        <div class="time-label">Enter how far you have listened.</div>
     </div>
 
-    <button onclick="calculateRemainingTime()">Calculate Remaining Time</button>
 
     <div id="result">
-        <div>Progress will display here.</div>
+        Welcome! Enter your book details to see your progress.
     </div>
-
+    
     <div class="button-group" id="buttonGroup">
-        <button onclick="saveProgress()">Save Progress</button>
-        <button onclick="clearProgress()" style="background-color: #cc4444;">Clear Current Book</button>
+        <button onclick="clearListenedTime()" style="background-color: #555;">Clear Progress (Keep Book Info)</button>
+        <button onclick="clearAll()" style="background-color: #555;">Clear All Data / Start New Book</button>
     </div>
+</div>
 
-</div> <script>
-    // --- JAVASCRIPT PLACEHOLDERS ---
-    // You need to paste your actual functions here to make the buttons work!
-    function loadProgress() {
-        console.log("Loading progress from local storage...");
-        // Your logic to load saved data
+<script>
+    // --- Constants for LocalStorage Keys and Input Order ---
+    const STORAGE_KEY_TITLE = 'currentBookTitle';
+    const STORAGE_KEY_TOTAL = 'currentBookTotalTime';
+    const STORAGE_KEY_LISTENED = 'currentBookListenedTime';
+
+    const TIME_PILL_IDS = [
+        'listened_h', 'listened_m', 'listened_s', 
+        'total_h', 'total_m', 'total_s'
+    ];
+
+    // --- Initialization: Attach the unified handler to all time pills ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const timePills = document.querySelectorAll('.time-pill');
+        timePills.forEach(pill => {
+            pill.addEventListener('keydown', (event) => handleTimeInput(event));
+            pill.addEventListener('input', () => {
+                // Rerun calculation/auto-tab only on input change, not on keydown
+                handleTimeInput({ target: pill, type: 'input' });
+            });
+            // Select all content when field receives focus
+            pill.addEventListener('focus', (event) => {
+                event.target.select(); 
+            });
+            
+            // --- Logic for V2.9: Handle Leading Zero ADDITION on Blur/Exit for ALL pills (HH, MM, SS) ---
+            pill.addEventListener('blur', (event) => {
+                const currentInput = event.target;
+                
+                let value = currentInput.value.trim();
+                    
+                // Check if the value is a single digit
+                if (value.length === 1) {
+                    currentInput.value = '0' + value; 
+                    calculateProgress(true); // Recalculate/save after visual change
+                } else if (value.length === 0) {
+                    // Ensure empty fields default to '00'
+                    currentInput.value = '00';
+                    calculateProgress(true);
+                }
+            });
+        });
+    });
+
+    /**
+     * V4.1: Checks if any input field contains data and shows/hides the clear buttons.
+     */
+    function toggleClearButtons() {
+        const title = document.getElementById('bookTitle').value.trim();
+        const inputs = TIME_PILL_IDS.map(id => document.getElementById(id).value.trim());
+        
+        let hasData = title.length > 0;
+
+        for (const value of inputs) {
+            // Check if any time field is non-empty
+            if (value.length > 0) {
+                hasData = true;
+                break;
+            }
+        }
+
+        const buttonGroup = document.getElementById('buttonGroup');
+        if (hasData) {
+            buttonGroup.style.display = 'flex';
+        } else {
+            buttonGroup.style.display = 'none';
+        }
     }
     
+    // --- Function to handle title update on blur ---
     function handleTitleBlur() {
-        console.log("Book title updated.");
-        // Your logic for saving the title
+        saveProgress();
+        calculateProgress(false); 
     }
 
-    function toggleClearButtons() {
-        // Your logic to show/hide the clear button
+    // --- Unified Input Handler (Handles all focus, navigation, and limits) ---
+    function handleTimeInput(event) {
+        const currentInput = event.target;
+        const currentId = currentInput.id;
+        const currentIndex = TIME_PILL_IDS.indexOf(currentId);
+        
+        // Determine if this is a Minute or Second field for the Max 59 check
+        const isMinOrSec = currentId.endsWith('_m') || currentId.endsWith('_s');
+        
+        let shouldRecalculate = false;
+
+        // --- 1. KEYDOWN Logic (Backspace, Shift+Tab) ---
+        if (event.type === 'keydown') {
+            const keyCode = event.keyCode || event.which;
+
+            // --- A. Backspace/Delete (Intuitive Backward Navigation) ---
+            if (keyCode === 8) { // Backspace
+                if (currentInput.value.length === 0 && currentIndex > 0) {
+                    event.preventDefault(); 
+                    const prevId = TIME_PILL_IDS[currentIndex - 1];
+                    const prevInput = document.getElementById(prevId);
+
+                    if (prevInput) {
+                        // Delete last character from previous field
+                        prevInput.value = prevInput.value.substring(0, prevInput.value.length - 1);
+                        
+                        // Set focus to previous field (The 'focus' listener will handle the selection)
+                        prevInput.focus();
+                        
+                        shouldRecalculate = true; 
+                    }
+                }
+            } 
+            
+            // --- B. Tab Navigation (Backward - Shift+Tab) ---
+            else if (keyCode === 9 && event.shiftKey) { // Shift+Tab
+                if (currentIndex > 0) {
+                    event.preventDefault(); 
+                    const prevId = TIME_PILL_IDS[currentIndex - 1];
+                    const prevInput = document.getElementById(prevId);
+                    
+                    if (prevInput) {
+                        // Set focus to previous field (The 'focus' listener will handle the selection)
+                        prevInput.focus();
+                        shouldRecalculate = true;
+                    }
+                }
+            }
+        } 
+        
+        // --- 2. INPUT Logic (Typing, Pasting, Max 59, Auto-Tab Forward) ---
+        else if (event.type === 'input') {
+            
+            // --- A. Max 59 Limit Check & Input Cleanup ---
+            let value = currentInput.value.replace(/[^0-9]/g, ''); 
+            if (isMinOrSec) {
+                const num = parseInt(value, 10);
+                if (num > 59) {
+                    currentInput.value = '59';
+                    value = '59';
+                } else {
+                    currentInput.value = value;
+                }
+            } else {
+                currentInput.value = value;
+            }
+            
+            // --- B. Determine Auto-Tabbing condition (Only check max length) ---
+            let shouldAutoTab = false;
+            
+            // Condition 1: Field is full (Standard behavior)
+            if (value.length === currentInput.maxLength) {
+                shouldAutoTab = true;
+            } 
+            
+            // --- C. Execute Auto-Tabbing/Keyboard Dismissal ---
+            if (shouldAutoTab && currentIndex < TIME_PILL_IDS.length - 1) {
+                const nextId = TIME_PILL_IDS[currentIndex + 1];
+                const nextInput = document.getElementById(nextId);
+                if (nextInput) {
+                    nextInput.focus();
+                    shouldRecalculate = true;
+                }
+            } else if (shouldAutoTab && currentId === 'total_s') {
+                // V4.3: Auto-dismiss keyboard when the final field (total_s) is filled
+                currentInput.blur();
+                shouldRecalculate = true; 
+            }
+            shouldRecalculate = true;
+        }
+
+        // --- 3. FINAL STEP: Recalculate and Save ---
+        if (shouldRecalculate) {
+            // Delay calculation to prevent focus interference during navigation
+            setTimeout(() => {
+                calculateProgress(true);
+            }, 0);
+        }
     }
 
-    function calculateRemainingTime() {
-        console.log("Calculating remaining time...");
-        // Your calculation logic
+
+    // --- Core Functions (Time Conversion and Storage) ---
+
+    function timeComponentsToSeconds(h, m, s) {
+        const hours = parseInt(h || '0', 10);
+        const minutes = parseInt(m || '0', 10);
+        const seconds = parseInt(s || '0', 10);
+        
+        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours < 0 || minutes < 0 || seconds < 0) {
+            return 0;
+        }
+        
+        return (hours * 3600) + (minutes * 60) + seconds;
+    }
+
+    function secondsToTimeComponents(totalSeconds) {
+        if (totalSeconds === null || totalSeconds === undefined || isNaN(totalSeconds) || totalSeconds < 0) {
+            totalSeconds = 0;
+        }
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = Math.floor(totalSeconds % 60);
+        
+        return {
+            h: hours.toString(), 
+            m: minutes.toString(),
+            s: seconds.toString()
+        };
     }
 
     function saveProgress() {
-        console.log("Saving current progress...");
-        // Your save logic
+        const totalSeconds = timeComponentsToSeconds(
+            document.getElementById('total_h').value,
+            document.getElementById('total_m').value,
+            document.getElementById('total_s').value
+        );
+        const listenedSeconds = timeComponentsToSeconds(
+            document.getElementById('listened_h').value,
+            document.getElementById('listened_m').value,
+            document.getElementById('listened_s').value
+        );
+
+        localStorage.setItem(STORAGE_KEY_TITLE, document.getElementById('bookTitle').value);
+        localStorage.setItem(STORAGE_KEY_TOTAL, totalSeconds); 
+        localStorage.setItem(STORAGE_KEY_LISTENED, listenedSeconds);
     }
 
-    function clearProgress() {
-        console.log("Clearing all progress...");
-        // Your clear logic
+
+    function loadProgress() {
+        document.getElementById('result').innerHTML = 'Welcome! Enter your book details to see your progress.';
+
+        const title = localStorage.getItem(STORAGE_KEY_TITLE) || '';
+        const totalSeconds = parseInt(localStorage.getItem(STORAGE_KEY_TOTAL)) || 0;
+        const listenedSeconds = parseInt(localStorage.getItem(STORAGE_KEY_LISTENED)) || 0;
+        
+        document.getElementById('bookTitle').value = title;
+        
+        // Helper to pad MM/SS values for display on load (to maintain two characters)
+        const padTime = (val) => val.length === 1 ? '0' + val : val;
+
+
+        // Populate Total Time boxes
+        if (totalSeconds > 0) {
+            const totalComponents = secondsToTimeComponents(totalSeconds);
+            document.getElementById('total_h').value = totalComponents.h;
+            document.getElementById('total_m').value = padTime(totalComponents.m);
+            document.getElementById('total_s').value = padTime(totalComponents.s);
+        } else {
+            document.getElementById('total_h').value = '';
+            document.getElementById('total_m').value = '';
+            document.getElementById('total_s').value = '';
+        }
+
+        // Populate Listened Time boxes
+        if (listenedSeconds > 0) {
+            const listenedComponents = secondsToTimeComponents(listenedSeconds);
+            document.getElementById('listened_h').value = listenedComponents.h;
+            document.getElementById('listened_m').value = padTime(listenedComponents.m);
+            document.getElementById('listened_s').value = padTime(listenedComponents.s);
+        } else {
+            document.getElementById('listened_h').value = '';
+            document.getElementById('listened_m').value = '';
+            document.getElementById('listened_s').value = '';
+        }
+        
+        // Calculate progress instantly on load if total time exists
+        if (totalSeconds > 0) {
+            calculateProgress(false); 
+        }
+
+        // V4.1: Check buttons visibility immediately on load
+        toggleClearButtons();
+    }
+    
+    /**
+     * Clears only the 'Time Listened' inputs and updates storage, 
+     * keeping the Book Title and Total Length.
+     */
+    function clearListenedTime() {
+        // V2.9.1 FIX: Clear inputs to empty string to show placeholder text
+        document.getElementById('listened_h').value = '';
+        document.getElementById('listened_m').value = '';
+        document.getElementById('listened_s').value = '';
+        
+        // Update Local Storage
+        localStorage.setItem(STORAGE_KEY_LISTENED, 0);
+
+        // Recalculate and update result message
+        calculateProgress(false); 
+
+        document.getElementById('result').innerHTML = '✅ Progress reset to 0%. Book details retained.';
+        
+        // V4.1: Re-check visibility after clearing data
+        toggleClearButtons();
+    }
+
+    /**
+     * Clears ALL inputs (Title, Listened Time, Total Length) and wipes Local Storage.
+     * This is the "Start New Book" function.
+     */
+    function clearAll() {
+        localStorage.clear();
+        
+        // Clear inputs on the page
+        document.getElementById('bookTitle').value = '';
+        document.getElementById('total_h').value = '';
+        document.getElementById('total_m').value = '';
+        document.getElementById('total_s').value = '';
+        document.getElementById('listened_h').value = '';
+        document.getElementById('listened_m').value = '';
+        document.getElementById('listened_s').value = '';
+        
+        document.getElementById('result').innerHTML = '✅ All data cleared. Ready for a new book!';
+
+        // V4.1: Hide the buttons after clearing all data
+        toggleClearButtons();
+    }
+
+
+    function calculateProgress(shouldSave = true) {
+        const bookTitle = document.getElementById('bookTitle').value.trim() || 'Your Book';
+        const resultDiv = document.getElementById('result');
+
+        const totalSeconds = timeComponentsToSeconds(
+            document.getElementById('total_h').value,
+            document.getElementById('total_m').value,
+            document.getElementById('total_s').value
+        );
+        
+        const listenedSeconds = timeComponentsToSeconds(
+            document.getElementById('listened_h').value,
+            document.getElementById('listened_m').value,
+            document.getElementById('listened_s').value
+        );
+
+        // --- Error/Validation Check ---
+        if (totalSeconds <= 0) {
+            resultDiv.innerHTML = '❌ Please enter a valid Total Book Length.';
+            return;
+        }
+        if (listenedSeconds < 0) {
+            resultDiv.innerHTML = '❌ Please enter a valid Time Listened.';
+            return;
+        }
+        if (listenedSeconds > totalSeconds) {
+            resultDiv.innerHTML = '⚠️ Time Listened cannot be greater than the Total Book Length.';
+            return;
+        }
+        
+        // --- Calculation ---
+        const percentage = (listenedSeconds / totalSeconds) * 100;
+        const formattedPercentage = percentage.toFixed(2); 
+
+        // --- Display Result ---
+        // Uses <div> elements for stacking content with minimal margin
+        resultDiv.innerHTML = `
+            <div><strong>${bookTitle}</strong></div>
+            <div>You are <strong>${formattedPercentage}%</strong> complete!</div>
+        `;
+        
+        // --- Auto-Save ---
+        if (shouldSave) {
+            saveProgress();
+        }
     }
 </script>
 
-</body> </html> ```
-
-**Next Step:**
-
-1.  **Replace** the content of your `index.html` file with the complete code above.
-2.  **Paste** your actual JavaScript functions into the `<script>` tag where the placeholders are.
-3.  **Commit and Push** the updated `index.html` to your GitHub repository.
-4.  Check your GitHub Pages link to confirm the full app appears.
-5.  If it looks correct, you can run the final **`bubblewrap build`** to create the updated APK.
+</body>
+</html>
