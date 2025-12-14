@@ -13,15 +13,16 @@
   ],
   "icons": [
     {
-      "src": "/android-icons/orange-icon.png",
+      "src": "/Audiobook-Progress-Tracker/android-icons/orange-icon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/android-icons/orange-icon.png",
+      "src": "/Audiobook-Progress-Tracker/android-icons/orange-icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
 }
+
 
