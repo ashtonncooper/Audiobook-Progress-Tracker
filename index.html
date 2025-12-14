@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="manifest.json">
-        <meta name="theme-color" content="#eb5f38"> 
+    <meta name="theme-color" content="#eb5f38"> 
     
     <style>
         body {
@@ -44,12 +44,12 @@
             font-weight: bold;
         }
         .time-input-group {
-            display: flex;
+            display: flex; /* V4.6 FIX: Restored to fix layout */
             align-items: center;
             gap: 5px;
         }
         .time-input-group input {
-            width: 50px; 
+            width: 50px; /* V4.6 FIX: Restored input width */
             padding: 10px;
             text-align: center;
             border: 1px solid #ccc;
