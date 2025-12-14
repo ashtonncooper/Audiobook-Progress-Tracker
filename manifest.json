@@ -9,18 +9,17 @@
   "categories": [
     "productivity",
     "utilities"
-  ]**,** <--- **MISSING COMMA GOES HERE**
+  ],
   "icons": [
     {
-      "src": "/android-icons/orange icon 2.png", // Use the relative path to your icon file
-      "sizes": "192x192", // IMPORTANT: Specify the size of your icon file
+      "src": "/android-icons/orange-icon.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/android-icons/orange icon 2.png", 
-      "sizes": "512x512", // If you have a 512x512 version, use it!
+      "src": "/android-icons/orange-icon.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
-    // The commented-out part is fine, but should be removed or uncommented correctly if used.
   ]
 }
