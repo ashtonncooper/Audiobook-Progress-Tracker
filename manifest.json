@@ -5,8 +5,8 @@
   "start_url": "/Audiobook-Progress-Tracker/",
   "scope": "/Audiobook-Progress-Tracker/",     
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#e5461c",
+  "background_color": "#eb5f38",
+  "theme_color": "#eb5f38",
   "categories": [
     "productivity",
     "utilities"
@@ -24,7 +24,3 @@
     }
   ]
 }
-
-
-
-
